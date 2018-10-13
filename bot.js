@@ -1,57 +1,61 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const prefix = '.'
+const fs = require('fs')
+const Canvas = require('canvas')
+const jimp = require('jimp')
+const moment = require('moment')
+const prefix = '!';
 
-client.on('ready', () => {
-  console.log(Logged in as ${client.user.tag}!);
-client.user.setGame(`,"")
-  console.log('')
-  console.log('')
-  console.log('╔[═════════════════════════════════════════════════════════════════]╗')
-  console.log([Start] ${new Date()});
-  console.log('╚[═════════════════════════════════════════════════════════════════]╝')
-  console.log('')
-  console.log('╔[════════════════════════════════════]╗');
-  console.log(Logged in as * [ " ${client.user.username} " ]);
-  console.log('')
-  console.log('Informations :')
-  console.log('')
-  console.log(servers! [ " ${client.guilds.size} " ]);
-  console.log(Users! [ " ${client.users.size} " ]);
-  console.log(channels! [ " ${client.channels.size} " ]);
-  console.log('╚[════════════════════════════════════]╝')
-  console.log('')
-  console.log('╔[════════════]╗')
-  console.log(' Bot Is Online')
-  console.log('╚[════════════]╝')
-  console.log('')
-  console.log('')
-});
 client.on('message', message => {
-    if (message.content.startsWith("-avatar")) {
-        if (message.author.bot) return
-        var mentionned = message.mentions.users.first();
-    var omar;
-      if(mentionned){
-          var omar = mentionned;
-      } else {
-          var omar = message.author;
-          
-      }
-        const embed = new Discord.RichEmbed()
-        .setColor("RANDOM")
-        .setAuthor('Avatar Link :')
-        .setTitle('Click Here')
-        .setURL(${omar.avatarURL})
-        .setImage(${omar.avatarURL}`)
-        .setFooter('name bot',client.user.avatarURL) 
-      message.channel.sendEmbed(embed);
-    }
+    
+    let command = message.content.split(" ")[0];
+  command = command.slice(prefix.length);
+
+  let args = message.content.split(" ").slice(1);
+    let guild = (client, message).guild;
+     let user = message.mentions.users.first();
+     var men = message.mentions.users.first();
+        var heg;
+        if(men) {
+            heg = men
+        } else {
+            heg = message.author
+        }
+      var mentionned = message.mentions.members.first();
+         var h;
+        if(mentionned) {
+            h = mentionned
+        } else {
+            h = message.member
+        }
+       moment.locale('ar-TN');
+{
+  let args = message.content.split(" ").slice(1);
+if(command == "id") {
+    var Canvas = require('canvas')
+  , Image = new Canvas.Image
+  , canvas = new Canvas(450, 170)
+  , ctx = canvas.getContext('2d');
+  ctx.font = '15px Impact';
+  
+Image.src = canvas.toBuffer();
+
+
+    
+ctx.drawImage(Image, 0, 0, Image.width / 470, Image.height / 170);
+ctx.fillText(`${moment(heg.createdTimestamp).fromNow()}`,90, 20);
+ctx.fillText(`${moment(h.joinedAt).fromNow()}`,110, 70);
+ctx.fillText(`${heg.username}`,70, 40);
+ctx.fillText(`${h.presence.status}`,50, 70);
+
+
+ctx.beginPath();
+ctx.lineTo(50, 102);
+ctx.stroke();
+
+
+
+message.channel.sendFile(canvas.toBuffer());
+}
+}
 });
-
-
-
-
-
 
 client.login(process.env.BOT_TOKEN);
