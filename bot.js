@@ -103,7 +103,7 @@ client.on('message', message => {
                                    })
                                    }
                                    });
-Client.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', member => {
     let new1 = member.guild.roles.find('name', "not active")
     let staff = member.guild.channels.find('name', "log")
     let staff1 = member.guild.roles.find('name', "active")
@@ -113,7 +113,7 @@ Client.on('guildMemberAdd', member => {
 });
  
  
-Client.on('message', message => {
+client.on('message', message => {
     let actrole = message.guild.roles.find('name', "Royal Member")
     let user = message.mentions.members.first()
     if(message.content.startsWith(prefix + "act")){
