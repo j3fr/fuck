@@ -40,7 +40,6 @@ if (message.content.startsWith(prefix + 'clear')) {
     message.channel.send(`\`${args}\` : __عدد الرسائل التي تم مسحها __ `).then(messages => messages.delete(5000));
   }
   });
-var prefix = "$";
 
 client.on('message', message => {
   if (message.author.bot) return;
