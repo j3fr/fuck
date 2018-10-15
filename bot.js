@@ -408,35 +408,52 @@ client.on('message' , message => {
  })
   }  
  });
-client.on('message', message => { 
-    var prefix ="#";
+  client.on('message', message => {
+          
+
            if (message.content.startsWith(prefix + "user")) {
-     var args = message.content.split(" ").slice(1);
-     let user = message.mentions.users.first();
-     var men = message.mentions.users.first();
-        var heg;
-        if(men) {
-            heg = men
-        } else {
-            heg = message.author
-        }
-      var mentionned = message.mentions.members.first();
-         var h;
-        if(mentionned) {
-            h = mentionned
-        } else {
-            h = message.member
-        }
-               moment.locale('ar-TN');
+           
+            
+            if(!message.channel.guild) return message.reply(`هذا الأمر فقط ل السيرفرات ❌`);
+
+                message.guild.fetchInvites().then(invs => {
+      let member = client.guilds.get(message.guild.id).members.get(message.author.id);
+      let personalInvites = invs.filter(i => i.inviter.id === message.author.id);
+      let inviteCount = personalInvites.reduce((p, v) => v.uses + p, 0);
+      var args = message.content.split(" ").slice(1);
+let user = message.mentions.users.first();
+var men = message.mentions.users.first();
+ var heg;
+ if(men) {
+     heg = men
+ } else {
+     heg = message.author
+ }
+var mentionned = message.mentions.members.first();
+  var h;
+ if(mentionned) {
+     h = mentionned
+ } else {
+     h = message.member
+ }
+        moment.locale('ar-TN');
       var id = new  Discord.RichEmbed()
-      .setAuthor(message.author.username, message.author.avatarURL) 
-    .setColor("#707070")
-    .addField(': دخولك لديسكورد قبل', `${moment(heg.createdTimestamp).format('YYYY/M/D HH:mm:ss')} **\n** \`${moment(heg.createdTimestamp).fromNow()}\`` ,true) 
-    .addField(': انضمامك لسيرفر قبل', `${moment(h.joinedAt).format('YYYY/M/D HH:mm:ss')} \n \`${moment(h.joinedAt).fromNow()}\``, true)               
-    .setFooter(`Royal Community Bot`, 'https://images-ext-2.discordapp.net/external/JpyzxW2wMRG2874gSTdNTpC_q9AHl8x8V4SMmtRtlVk/https/orcid.org/sites/default/files/files/ID_symbol_B-W_128x128.gif')                                 
-    .setThumbnail(heg.avatarURL);
-    message.channel.send(id)
-}       });
+       
+    .setColor("#0a0909")
+ .setThumbnail(message.author.avatarURL)
+.addField(': تاريخ دخولك للديسكورد',` \`${moment(heg.createdTimestamp).format('YYYY/M/D HH:mm:ss')} \`**\n ${moment(heg.createdTimestamp).fromNow()}**` ,true) 
+.addField(': تاريخ دخولك لسيرفرنا', `\`${moment(h.joinedAt).format('YYYY/M/D HH:mm:ss')}  \` **\n ${moment(h.joinedAt).fromNow()} **`, true)
+.addField(` :لقد قمت بدعوة `, ` ${inviteCount} `)
+
+
+.setFooter(message.author.username, message.author.avatarURL)  
+    message.channel.sendEmbed(id);
+})
+}
+    
+
+         
+     });
 client.on('message', message => {
         var prefix = '#'; // هنا تقدر تغير البرفكس
 	var command = message.content.split(" ")[0];
@@ -1101,52 +1118,6 @@ channel.send(`Invited By ${Invite.inviter}`)
             dat[Inv] = Invite.uses;
         })
     })
-});
-client.on('message', function(message) {
-    if(message.content.startsWith('الاقتراقااااح')) {
-        if (message.author.id === client.user.id) return;
-           client.channels.get("500646437319606292").send(`
-\n\n\`\`\`${message.content}\`\`\` 
- <@!${message.author.id}> من قبل
-`);
-    }
-});
-const res = JSON.parse(fs.readFileSync('./responses.json' , 'utf8'));
-client.on('message', async message => {
-    let messageArray = message.content.split(" ");
-   if(message.content.startsWith(prefix + "setMsg")) {
-    if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You don\'t have permission').then(msg => {
-       msg.delete(4500);
-       message.delete(4500);
-    });
-    
-    if(!messageArray[1]) return message.channel.send('Supply a message!').then(msg => {
-       msg.delete(4500);
-       message.delete(4500);
-    });
-    if(!messageArray[2]) return message.channel.send('Suplly a response!').then(msg => {
-       msg.delete(4500);
-       message.delete(4500);
-    });
-    message.reply('Preparing...').then(msg => {
-        setTimeout(() => {
-           msg.edit(':white_check_mark: Done!.'); 
-        },5000);
-    });
-    res[message.guild.id] = {
-        msg: messageArray[1],
-        response: messageArray[2],
-    };
-    fs.writeFile("./responses.json", JSON.stringify(res), (err) => {
-    if (err) console.error(err);
-  });
-   } 
-});
-
-client.on('message', async message => {
-   if(message.content === res[message.guild.id].msg) {
-       message.channel.send(res[message.guild.id].response);
-   }
 });
 client.on('message', ( message ) => {
   if(message.author.bot) return;
