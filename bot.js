@@ -34,7 +34,7 @@ client.on('message',function(message) {
        if(!muteReason) return message.channel.send('حدد سبباّ');
        if(!muteDuration) return message.channel.send('حدد وقت زمني');
        if(!muteDuration.match(/[1-7][s,m,h,d,w]/g)) return message.channel.send('حدد وقت زمني صحيح');
-       message.channel.send(`:white_check_mark: تم اعطاء العضو ميوت : ${muteMember}`);
+       message.channel.send(`${muteMember} تم اعطاء العضو ميوت :zipper_mouth:`);
        muteMember.addRole(muteRole);
        muteMember.setMute(true)
        .then(() => { setTimeout(() => {
@@ -443,7 +443,7 @@ var mentionned = message.mentions.members.first();
  .setThumbnail(message.author.avatarURL)
 .addField(': تاريخ دخولك للديسكورد',` \`${moment(heg.createdTimestamp).format('YYYY/M/D HH:mm:ss')} \`**\n ${moment(heg.createdTimestamp).fromNow()}**` ,true) 
 .addField(': تاريخ دخولك لسيرفرنا', `\`${moment(h.joinedAt).format('YYYY/M/D HH:mm:ss')}  \` **\n ${moment(h.joinedAt).fromNow()} **`, true)
-.addField(` :لقد قمت بدعوة `, ` ${inviteCount} `)
+.addField(` : عدد الدعوات `, ` ${inviteCount} `)
 
 
 .setFooter(message.author.username, message.author.avatarURL)  
