@@ -1004,7 +1004,6 @@ client.on('voiceStateUpdate', (voiceOld, voiceNew) => {
 		logChannel.send(voiceLeave);
 	}
 });
-const client = new Discord.Client({disableEveryone: true, maxMessagesCache: 1});
 const config = { prefix: "#" };
 const tpoints = {};
 const vpoints = {};
