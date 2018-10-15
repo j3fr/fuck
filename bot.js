@@ -1029,7 +1029,7 @@ client.on('message',async message => {
 
   let rPoints = Math.floor(Math.random() * 4) + 1;// Random Points
   tpoints[author.id].points += rPoints;
-  if(args[0] === `${hero.config.prefix}top`) {
+  if(args[0] === `${client.config.prefix}top`) {
     let _voicePointer = 1;
     let _textPointer = 1;
     let _voiceArray = Object.values(vpoints);
