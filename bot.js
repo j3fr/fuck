@@ -1102,82 +1102,51 @@ channel.send(`Invited By ${Invite.inviter}`)
         })
     })
 });
-client.on('message', message => {
-    if(message.content.startsWith(prefix + 'new')) {
-        let args = message.content.split(' ').slice(1).join(' ');
-        let support = message.guild.roles.find("name","Support Team");
-        let ticketsStation = message.guild.channels.find("name", "TICKETS");
-        if(!args) {
-            return message.channel.send('Please type a subject for the ticket.');
-        };
-                if(!support) {
-                    return message.channel.send('**Please make sure that `Support Team` role exists and it\'s not duplicated.**');
-                };
-            if(!ticketsStation) {
-                message.guild.createChannel("TICKETS", "category");
-            };
-                message.guild.createChannel(`ticket-${message.author.username}`, "text").then(ticket => {
-                    message.delete()
-                        message.channel.send(`Your ticket has been created. [ ${ticket} ]`);
-                    ticket.setParent(ticketsStation);
-                    ticketsStation.setPosition(1);
-                        ticket.overwritePermissions(message.guild.id, {
-                            SEND_MESSAGES: false,
-                            READ_MESSAGES: false
-                        });
-                            ticket.overwritePermissions(support.id, {
-                                SEND_MESSAGES: true,
-                                READ_MESSAGES: true
-                            });
-                                ticket.overwritePermissions(message.author.id, {
-                                    SEND_MESSAGES: true,
-                                    READ_MESSAGES: true
-                                });
-                    let embed = new Discord.RichEmbed()
-                                .setTitle('**New Ticket.**')
-                                .setColor("RANDOM")
-                                .setThumbnail(`${message.author.avatarURL}`)
-                                .addField('Subject', args)
-                                .addField('Author', message.author)
-                                .addField('Channel', `<#${message.channel.id}>`);
-
-                                ticket.sendEmbed(embed);
-                }) .catch();
+client.on('message', function(message) {
+    if(message.content.startsWith('الاقتراقااااح')) {
+        if (message.author.id === client.user.id) return;
+           client.channels.get("500646437319606292").send(`
+\n\n\`\`\`${message.content}\`\`\` 
+ <@!${message.author.id}> من قبل
+`);
     }
-    if(message.content.startsWith(prefix + 'close')) {
-            if(!message.member.hasPermission("ADMINISTRATOR")) return;
-        if(!message.channel.name.startsWith("ticket")) {
-            return;
-        };  
-                let embed = new Discord.RichEmbed()
-                    .setAuthor("Do you really want to close this ticket? Repeat the command to make sure. You have 20 seconds.")
-                    .setColor("RANDOM");
-                    message.channel.sendEmbed(embed) .then(codes => {
+});
+const res = JSON.parse(fs.readFileSync('./responses.json' , 'utf8'));
+client.on('message', async message => {
+    let messageArray = message.content.split(" ");
+   if(message.content.startsWith(prefix + "setMsg")) {
+    if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You don\'t have permission').then(msg => {
+       msg.delete(4500);
+       message.delete(4500);
+    });
+    
+    if(!messageArray[1]) return message.channel.send('Supply a message!').then(msg => {
+       msg.delete(4500);
+       message.delete(4500);
+    });
+    if(!messageArray[2]) return message.channel.send('Suplly a response!').then(msg => {
+       msg.delete(4500);
+       message.delete(4500);
+    });
+    message.reply('Preparing...').then(msg => {
+        setTimeout(() => {
+           msg.edit(':white_check_mark: Done!.'); 
+        },5000);
+    });
+    res[message.guild.id] = {
+        msg: messageArray[1],
+        response: messageArray[2],
+    };
+    fs.writeFile("./responses.json", JSON.stringify(res), (err) => {
+    if (err) console.error(err);
+  });
+   } 
+});
 
-                    
-                        const filter = msg => msg.content.startsWith(prefix + 'close');
-                        message.channel.awaitMessages(response => response.content === prefix + 'close', {
-                            max: 1,
-                            time: 20000,
-                            errors: ['time']
-                        })
-                        .then((collect) => {
-                            message.channel.delete();
-                        }) .catch(() => {
-                            codes.delete()
-                                .then(message.channel.send('**Operation has been cancelled.**')) .then((c) => {
-                                    c.delete(4000);
-                                })
-                                    
-                            
-                        })
-
-
-                    })
-
-
-            
-    }
+client.on('message', async message => {
+   if(message.content === res[message.guild.id].msg) {
+       message.channel.send(res[message.guild.id].response);
+   }
 });
 client.on('message', ( message ) => {
   if(message.author.bot) return;
