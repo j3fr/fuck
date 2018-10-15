@@ -1008,7 +1008,7 @@ const config = { prefix: "#" };
 const tpoints = {};
 const vpoints = {};
 client.config = config;
-client.login(hero.config.token);
+client.login(client.config.token);
 client.on('ready',async () => {
   console.log(`Royal Community`);
   client.users.forEach(m => {
