@@ -1021,18 +1021,20 @@ client.on('voiceStateUpdate', (voiceOld, voiceNew) => {
 		logChannel.send(voiceLeave);
 	}
 });
-const config = { prefix: "#" };
-const tpoints = {};
-const vpoints = {};
+const config = require('./Configuration.json');
+const tpoints = JSON.parse(fs.readFileSync('./Text.json', 'UTF8'));
+const vpoints = JSON.parse(fs.readFileSync('./Voice.json', 'UTF8'));
 client.config = config;
 client.login(client.config.token);
 client.on('ready',async () => {
-  console.log(`Royal Community`);
+  console.log(`.Royale Community.`);
   client.users.forEach(m => {
     if(m.bot) return;
     if(!tpoints[m.id]) tpoints[m.id] = {points: 0, id: m.id};
+    fs.writeFileSync("./Text.json", JSON.stringify(tpoints, null, 2));
 
     if(!vpoints[m.id]) vpoints[m.id] = {points: 0, id: m.id};
+    fs.writeFileSync("./Voice.json", JSON.stringify(vpoints, null, 2));
   });
 });
 
@@ -1046,6 +1048,7 @@ client.on('message',async message => {
 
   let rPoints = Math.floor(Math.random() * 4) + 1;// Random Points
   tpoints[author.id].points += rPoints;
+  fs.writeFileSync("./Text.json", JSON.stringify(tpoints, null, 2));
   if(args[0] === `${client.config.prefix}top`) {
     let _voicePointer = 1;
     let _textPointer = 1;
@@ -1060,7 +1063,7 @@ client.on('message',async message => {
     //topRoyale.setThumbnail(message.guild.iconURL);
     topRoyale.addField(`**TOP 5 TEXT 💬**`, _topText, true);
     topRoyale.addField(`**TOP 5 VOICE 🎙**`, _voiceText, true);
-    topRoyale.setFooter(`Royal Community`, message.guild.iconURL);
+    topRoyale.setFooter(`Royale Community`, message.guild.iconURL);
     message.channel.send(topRoyale).catch(e => {
       if(e) return message.channel.send(`**. Error; \`${e.message}\`**`);
     });
@@ -1076,6 +1079,7 @@ client.on('voiceStateUpdate', (u, member) => {
     if(!member.voiceChannel) return;
     if(member.selfDeafen) return;
     vpoints[author].points += rPoints;
+    fs.writeFileSync("./Voice.json", JSON.stringify(vpoints, null, 2));
   }, 5000); // 5 Secs
 });
 var dat = JSON.parse(fs.readFileSync('./invite.json', 'utf8'));
