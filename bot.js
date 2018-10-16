@@ -1021,7 +1021,7 @@ client.on('voiceStateUpdate', (voiceOld, voiceNew) => {
 		logChannel.send(voiceLeave);
 	}
 });
-client.config = config;
+client.on = config;
 client.login(process.env.BOT_TOKEN);
 client.on('ready',async () => {
   console.log(`.Leaderboard.`);
