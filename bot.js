@@ -548,50 +548,6 @@ var mentionned = message.mentions.members.first();
 
          
      });
-client.on('message', message => {
-        var prefix = '#'; // هنا تقدر تغير البرفكس
-	var command = message.content.split(" ")[0];
-	if(command == prefix + 'bc') { // الكوماند !bc
-		var args = message.content.split(' ').slice(1).join(' ');
-		if(message.author.bot) return;
-		if(!args) return message.channel.send(`**➥ Useage:** ${prefix}bc كلامك`);
-		
-		let bcSure = new Discord.RichEmbed()
-		.setTitle(`:mailbox_with_mail: **هل انت متأكد انك تريد ارسال رسالتك الى** ${message.guild.memberCount} **عضو**`)
-		.setThumbnail(client.user.avatarURL)
-		.setColor('RANDOM')
-		.setDescription(`**\n:envelope: ➥ رسالتك**\n\n${args}`)
-		.setTimestamp()
-		.setFooter(message.author.tag, message.author.avatarURL)
-		
-		message.channel.send(bcSure).then(msg => {
-			msg.react('✅').then(() => msg.react('❎'));
-			message.delete();
-			
-			
-			let yesEmoji = (reaction, user) => reaction.emoji.name === '✅'  && user.id === message.author.id;
-			let noEmoji = (reaction, user) => reaction.emoji.name === '❎' && user.id === message.author.id;
-			
-			let sendBC = msg.createReactionCollector(yesEmoji);
-			let dontSendBC = msg.createReactionCollector(noEmoji);
-			
-			sendBC.on('collect', r => {
-				message.guild.members.forEach(member => {
-					member.send(args.replace(`[user]`, member)).catch();
-					if(message.attachments.first()){
-						member.sendFile(message.attachments.first().url).catch();
-					}
-				})
-				message.channel.send(`:timer: **يتم الان الارسال الى** \`\`${message.guild.memberCount}\`\` **عضو**`).then(msg => msg.delete(5000));
-				msg.delete();
-			})
-			dontSendBC.on('collect', r => {
-				msg.delete();
-				message.reply(':white_check_mark: **تم الغاء ارسال رسالتك بنجاح**').then(msg => msg.delete(5000));
-			});
-		})
-	}
-});
 client.on('messageDelete', message => {
 
 	if(message.author.bot) return;
@@ -1115,63 +1071,31 @@ client.on('voiceStateUpdate', (voiceOld, voiceNew) => {
 		logChannel.send(voiceLeave);
 	}
 });
-client.login(process.env.BOT_TOKEN);
-client.on('ready',async () => {
-  console.log(`.Leaderboard.`);
-  client.users.forEach(m => {
-    if(m.bot) return;
-    if(!tpoints[m.id]) tpoints[m.id] = {points: 0, id: m.id};
-    fs.writeFileSync("./Text.json", JSON.stringify(tpoints, null, 2));
- 
-    if(!vpoints[m.id]) vpoints[m.id] = {points: 0, id: m.id};
-    fs.writeFileSync("./Voice.json", JSON.stringify(vpoints, null, 2));
-  });
-});
- 
 client.on('message',async message => {
   if(message.author.bot || message.channel.type === 'dm') return;
   let args = message.content.split(' ');
-  let member = message.member;
-  let mention = message.mentions.users.first();
-  let guild = message.guild;
-  let author = message.author;
- 
-  let rPoints = Math.floor(Math.random() * 4) + 1;// Random Points
-  tpoints[author.id].points += rPoints;
-  fs.writeFileSync("./Text.json", JSON.stringify(tpoints, null, 2));
-  if(args[0] === `${prefix}top`) {
-    let _voicePointer = 1;
-    let _textPointer = 1;
-    let _voiceArray = Object.values(vpoints);
-    let _textArray = Object.values(tpoints);
-    let _topText = _textArray.slice(0, 5).map(r => `**\`.${_textPointer++}\` | <@${r.id}> \`XP: ${r.points}\`**`).sort((a, b) => a > b).join('\n');
-    let _voiceText = _voiceArray.slice(0, 5).map(r => `**\`.${_voicePointer++}\` | <@${r.id}> \`XP: ${r.points}\`**`).sort((a, b) => a > b).join('\n');
- 
-    let topRoyale = new Discord.RichEmbed();
-    topRoyale.setAuthor(message.author.username, message.author.avatarURL);
-    topRoyale.setTitle('# "📋 Guild Score Leaderboards');
-    //topRoyale.setThumbnail(message.guild.iconURL);
-    topRoyale.addField(`**TOP 5 TEXT 💬**`, _topText, true);
-    topRoyale.addField(`**TOP 5 VOICE 🎙**`, _voiceText, true);
-    topRoyale.setFooter(`GaintPlus Bot | بوت جاينت بلس`, message.guild.iconURL);
-    message.channel.send(topRoyale).catch(e => {
-      if(e) return message.channel.send(`**. Error; \`${e.message}\`**`);
+  if(args[0] === `${prefix}bc`) {
+    if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('- **أنت لا تملك الصلاحيات اللازمة لأستخدام هذا الأمر**');
+    if(!args[1]) return message.channel.send('- **يجب عليك كتابة الرسالة بعد الأمر**');
+  
+    let msgCount = 0;
+    let errorCount = 0;
+    let successCount = 0;
+    message.channel.send(`**- [ :bookmark: :: ${msgCount} ] ・عدد الرسائل المرسلة**\n**- [ :inbox_tray: :: ${successCount} ] ・عدد الرسائل المستلمة**\n**- [ :outbox_tray: :: ${errorCount} ]・عدد الرسائل الغير مستلمة**`).then(msg => {
+      message.guild.members.forEach(g => {
+        g.send(args.slice(1).join(' ')).then(() => {
+          successCount++;
+          msgCount++;
+          msg.edit(`**- [ :bookmark: :: ${msgCount} ] ・عدد الرسائل المرسلة**\n**- [ :inbox_tray: :: ${successCount} ] ・عدد الرسائل المستلمة**\n**- [ :outbox_tray: :: ${errorCount} ]・عدد الرسائل الغير مستلمة**`);
+        }).catch(e => {
+          errorCount++;
+          msgCount++;
+          msg.edit(`**- [ :bookmark: :: ${msgCount} ] ・عدد الرسائل المرسلة**\n**- [ :inbox_tray: :: ${successCount} ] ・عدد الرسائل المستلمة**\n**- [ :outbox_tray: :: ${errorCount} ]・عدد الرسائل الغير مستلمة**`);
+        });
+      });
     });
   }
 });
-client.on('voiceStateUpdate', (u, member) => {
-  let author = member.user.id;
-  let guild = member.guild;
-  if(member.voiceChannel === null) return;
-  let rPoints = Math.floor(Math.random() * 4) + 1;// Random Points
-  setInterval(() => {
-    if(!member.voiceChannel) return;
-    if(member.selfDeafen) return;
-    vpoints[author].points += rPoints;
-    fs.writeFileSync("./Voice.json", JSON.stringify(vpoints, null, 2));
-  }, 5000); // 5 Secs
-});
-
 client.login(process.env.BOT_TOKEN);
 var dat = JSON.parse(fs.readFileSync('./invite.json', 'utf8'));
 function forEachObject(obj, func) {
