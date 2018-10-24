@@ -16,33 +16,33 @@ client.on('ready', () => {
 
 
 client.on('message', message => {
-    if(message.content === '^^DailyForAll'){
+    if(message.content === '.'){
         message.channel.send('#daily')
     }
 });
 
 client.on('message', message => {
-    if(message.content === '^^AllCredit'){
+    if(message.content === '.'){
         message.channel.send('#credits')
     }
 });
 
 
 client.on('message', message => {
-    if(message.content === '^^RepForRobben'){
-        message.channel.send('#rep <@371060496276783104>')
+    if(message.content === '.'){
+        message.channel.send('#rep <@446020555808964619>')
     }
 });
 
 client.on('message', message => {
-    if(message.content === '^^RepForBoss'){
-        message.channel.send('#rep <@443152649899212810>')
+    if(message.content === '.'){
+        message.channel.send('#rep <@446020555808964619>')
     }
 });
 
 client.on('message', message => {
-    if(message.content === '^^RepForAlashaq'){
-        message.channel.send('#rep <@346045919072092161>')
+    if(message.content === '.'){
+        message.channel.send('#rep <@446020555808964619>')
     }
 });
 
