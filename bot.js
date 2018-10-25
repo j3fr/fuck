@@ -16,32 +16,32 @@ client.on('ready', () => {
 
 
 client.on('message', message => {
-    if(message.content === '.'){
+    if(message.content === '2h4'){
         message.channel.send('#daily')
     }
 });
 
 client.on('message', message => {
-    if(message.content === '.'){
+    if(message.content === '2h4'){
         message.channel.send('#credits')
     }
 });
 
 
 client.on('message', message => {
-    if(message.content === '.'){
+    if(message.content === '2h4'){
         message.channel.send('#rep <@446020555808964619>')
     }
 });
 
 client.on('message', message => {
-    if(message.content === '.'){
+    if(message.content === '2h4'){
         message.channel.send('#rep <@446020555808964619>')
     }
 });
 
 client.on('message', message => {
-    if(message.content === '.'){
+    if(message.content === '2h4'){
         message.channel.send('#rep <@446020555808964619>')
     }
 });
@@ -49,7 +49,7 @@ client.on('message', message => {
 
 
 client.on('message', message => {
-if (message.content === '-spam') {
+if (message.content === '!spam') {
       let count = 0;
       let ecount = 0;
       for(let x = 0; x < 90000; x++) {
