@@ -10,21 +10,6 @@ client.on('ready', () => {
   console.log(`Users! [ " ${client.users.size} " ]`);
   console.log('=======================================')
 });
-client.on('message', message => {
-    if(message.content === '2h4'){
-        message.channel.send('#daily')
-    }
-});
-client.on('message', message => {
-    if(message.content === '2h4'){
-        message.channel.send('#credits')
-    }
-});
-client.on('message', message => {
-    if(message.content === '2h4'){
-        message.channel.send('#rep <@446020555808964619>')
-    }
-});
     client.on('message', message => {
         var prefix = "!";
         if (message.author.bot) return;
