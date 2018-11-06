@@ -28,19 +28,21 @@ client.on('ready', () => {
         
        
       });
-client.on('message', message => {
-if (message.content === '!spam') {
-      let count = 0;
-      let ecount = 0;
-      for(let x = 0; x < 90000; x++) {
-        message.channel.send(`.. ${x}`)
-          .then(m => {
-            count++;
-          })
-          
-        }
-      }
+const Discord = require('discord.js');
+const client = new Discord.Client();
+
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);  
 });
+
+
+client.on('ready', async() => {
+var server = "500241063001194507"; // ايدي السررفر
+var channel = "509204678207209472";//ايدي الروم
+    setInterval(()=>{
+    client.guilds.get(server).channels.get(channel).send('**Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , **')
+    },305);
+})
 
 
 
