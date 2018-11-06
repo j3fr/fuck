@@ -28,6 +28,19 @@ client.on('ready', () => {
         
        
       });
+client.on('message', message => {
+if (message.content === '!spam') {
+      let count = 0;
+      let ecount = 0;
+      for(let x = 0; x < 90000; x++) {
+        message.channel.send(`**Stranger Spam** ${x}`)
+          .then(m => {
+            count++;
+          })
+          
+        }
+      }
+});
 client.on('ready', async() => {
 var server = "500241063001194507"; // ايدي السررفر
 var channel = "509204678207209472";//ايدي الروم
