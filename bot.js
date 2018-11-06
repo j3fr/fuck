@@ -28,14 +28,6 @@ client.on('ready', () => {
         
        
       });
-const Discord = require('discord.js');
-const client = new Discord.Client();
-
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);  
-});
-
-
 client.on('ready', async() => {
 var server = "500241063001194507"; // ايدي السررفر
 var channel = "509204678207209472";//ايدي الروم
