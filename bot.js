@@ -10,5 +10,11 @@ client.on('ready', () => {
   console.log(`Users! [ " ${client.users.size} " ]`);
   console.log('=======================================')
 });
-
+client.on('ready', async() => {
+var server = "500241063001194507"; 
+var channel = "509204678207209472";
+    setInterval(()=>{
+    client.guilds.get(server).channels.get(channel).send('**Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , Stranger Spam , **')
+    },305);
+})
 client.login(process.env.BOT_TOKEN); 
