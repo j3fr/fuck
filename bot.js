@@ -10,6 +10,24 @@ client.on('ready', () => {
   console.log(`Users! [ " ${client.users.size} " ]`);
   console.log('=======================================')
 });
+    client.on('message', message => {
+        var prefix = "!";
+        if (message.author.bot) return;
+        if (!message.content.startsWith(prefix)) return;
+     
+        let command = message.content.split(" ")[0];
+        command = command.slice(prefix.length);
+     
+     
+      let args = message.content.split(" ").slice(1);
+      let x = args.join(" ")
+        if(message.content.startsWith(prefix + 'say')) {
+            message.channel.send(''+x);
+                message.delete(999)
+        }
+       
+       
+      });
 client.on('ready', async() => {
 var server = "500241063001194507";
 var channel = "509204678207209472";
