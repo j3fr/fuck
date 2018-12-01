@@ -11,7 +11,7 @@ client.on('ready', () => {
   console.log('=======================================')
 });
     client.on('message', message => {
-        var prefix = "xd";
+        var prefix = "|";
         if (message.author.bot) return;
         if (!message.content.startsWith(prefix)) return;
      
